@@ -187,3 +187,83 @@ F. FDS (Fraud / Abnormal Transaction Detection)
 - Domain model 확정
 - DB 구조 고정
 - 계산/모델링을 위한 데이터 토대 완료
+
+---
+# Phase 2 — Recency Weighted Stats
+
+## 최근 N경기 추출 로직 & 가중치 테이블 정의
+
+### 목표
+- “최근 경기일수록 더 중요하다”는 개념을 **구조와 정책으로 고정**
+
+
+### 구현 요약
+- **RecencyWeightPolicy**
+  - 최근 경기 가중치 정책 정의
+  - 예: `[1.00, 0.85, 0.70, 0.55, 0.40]`
+  - 불변 객체(`final`, `List.copyOf`)
+- **RecentFightsPort (Core)**
+  - fighter 기준 최근 N경기 조회 계약
+  - DB/JPA 의존 제거
+- **RecencyFightSelector**
+  - “최근 경기 선택” 정책 담당
+  - Port + WeightPolicy 결합
+- **JPA Adapter / FightRepository**
+  - `redCorner / blueCorner` 기준 경기 조회
+  - `fightDate DESC` 정렬
+  - `PageRequest`로 N개 제한
+
+### 핵심 포인트
+- “최근 경기”는 쿼리가 아닌 **도메인 정책**
+- Core ↔ Platform 분리 구조 확립
+
+---
+
+##  RecencyAdjustedStats 계산
+
+### 목표
+- 최근 폼(Form)을 **숫자로 계산**
+
+### 구현 요약
+- **RecencyAdjustedStats**
+  - 계산 결과 값 객체
+  - `totalFights`, `weightedWinScore`
+- **RecencyStatsService / Impl**
+  - Selector로 최근 경기 조회
+  - index 기반 가중치 적용
+  - 승리 경기만 가중 합산
+
+### 예시
+```text
+최근 5경기 결과: 승/패/승/무/승
+가중치 적용 → weightedWinScore = 2.10
+
+```
+---
+##Recency Stats 검증 & JSON 표현
+
+###  목표
+- Day 9에서 구현한 **RecencyAdjustedStats 계산 로직**을  
+  **단위 테스트로 검증**
+- 계산 결과가 **JSON으로 안정적으로 표현 가능함**을 확인
+
+---
+
+### 구현 내용
+
+#### 1. 단위 테스트 (RecencyStatsServiceImplTest)
+- Spring 컨테이너 없이 순수 JUnit 테스트
+- DB 접근 X (Fake `RecentFightsPort` 사용)
+- Mockito로 `Fight`, `Fighter` mock 생성
+
+**검증 케이스**
+- 전부 승리 → 모든 가중치 합산
+- 승/패/무 혼합 → 승리한 경기만 가중치 반영
+
+---
+
+#### 2. 가중치 계산 검증
+- index 0 = 가장 최근 경기
+- 가중치 정책:
+  ```text
+  [1.00, 0.85, 0.70, 0.55, 0.40]
