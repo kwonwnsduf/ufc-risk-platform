@@ -28,6 +28,9 @@ public class FighterStyleProfile {
     @Column(nullable = false)
     private double strDef; // strikes defend
 
+    @Column(nullable=false)
+    private double sapm;
+
     @Column(nullable = false)
     private double tdAvg; //takedown average
 
@@ -50,6 +53,7 @@ public class FighterStyleProfile {
             double slpm,
             double strAcc,
             double strDef,
+            double sApM,
             double tdAvg,
             double tdAcc,
             double tdDef,
@@ -59,6 +63,7 @@ public class FighterStyleProfile {
         this.slpm = slpm;
         this.strAcc = strAcc;
         this.strDef = strDef;
+        this.sapm=sapm;
         this.tdAvg = tdAvg;
         this.tdAcc = tdAcc;
         this.tdDef = tdDef;
@@ -69,6 +74,7 @@ public class FighterStyleProfile {
             double slpm,
             double strAcc,
             double strDef,
+            double sApM,
             double tdAvg,
             double tdAcc,
             double tdDef,
@@ -77,6 +83,7 @@ public class FighterStyleProfile {
         this.slpm = slpm;
         this.strAcc = strAcc;
         this.strDef = strDef;
+        this.sapm=sapm;
         this.tdAvg = tdAvg;
         this.tdAcc = tdAcc;
         this.tdDef = tdDef;

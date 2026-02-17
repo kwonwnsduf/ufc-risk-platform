@@ -41,6 +41,7 @@ public class RecencyStatsServiceImpl implements RecencyStatsService{
     private boolean isWinner(Fight fight, Long fighterId) {
         if (fight.getResult() == FightResult.DRAW) return false;
 
+
         Fighter red = fight.getRedCorner();
         Fighter blue = fight.getBlueCorner();
 

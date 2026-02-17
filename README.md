@@ -267,3 +267,23 @@ F. FDS (Fraud / Abnormal Transaction Detection)
 - 가중치 정책:
   ```text
   [1.00, 0.85, 0.70, 0.55, 0.40]
+
+---
+# 🟦 Phase 3 — Style Matchup & Clash Engine (Day 11 ~ Day 15)
+
+Phase 3의 목적은 단순한 승패 예측이 아니다.
+
+> **두 파이터의 스타일이 어떻게 맞부딪히고,  
+그 충돌이 경기의 변동성과 리스크를 어떻게 만들어내는지**  
+를 정량적으로 설명하는 엔진을 구축한다.
+
+이 Phase에서는 아래와 같은 순서로 계산 레이어를 쌓는다.
+
+1. 타격 우위 (Striking Advantage)
+2. 레슬링 우위 (Wrestling Advantage)
+3. 그래플 / 서브미션 위협 (Grapple Threat)
+4. 스타일 충돌 (Style Clash)
+5. 체급 기준선 보정 (Weight Baseline Adjustment)
+
+모든 점수는 **A 파이터 기준 상대 비교 점수**로 계산되며,
+부호는 방향(+/-), 절대값은 강도를 의미한다.
