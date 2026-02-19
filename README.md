@@ -287,3 +287,127 @@ Phase 3의 목적은 단순한 승패 예측이 아니다.
 
 모든 점수는 **A 파이터 기준 상대 비교 점수**로 계산되며,
 부호는 방향(+/-), 절대값은 강도를 의미한다.
+
+---
+# 🟦 Phase 4 — RiskScore & Uncertainty
+
+> **“누가 이긴다”가 아니라  
+> “이 경기는 얼마나 위험한가”를 수치로 만든다.**
+
+Phase 4에서는 경기 결과 예측이 아니라,  
+**예측 자체가 얼마나 불안정하고 리스크가 큰지**를 정량화한다.
+
+이 단계의 핵심은
+- 데이터 신뢰도
+- 결말 방식의 변동성
+- 최근 폼 변화
+  를 **서로 다른 관점의 리스크로 분리한 뒤**,  
+  하나의 RiskScore로 통합하는 것이다.
+
+---
+
+##  Uncertainty Score
+
+###  목표
+> **이 경기의 데이터를 얼마나 믿을 수 있는가?**
+
+### 핵심 아이디어
+- 표본 수가 적으면 불확실
+- 경기력 분산이 크면 불확실
+- 최근 경기 비중이 낮으면 불확실
+
+### 주요 요소
+- `dataSparsity` : 최근 경기 수 부족 리스크
+- `statVariance` : 퍼포먼스 분산 리스크
+- `recencyCoverage` : 최근성 커버리지 부족 리스크
+
+### 산출물
+- `UncertaintyScore`
+- `UncertaintyBreakdown`
+- `UncertaintyCalculator`
+
+
+---
+
+## Finish Volatility
+
+###  목표
+> **이 경기는 어떤 방식으로 끝날지 얼마나 요동치는가?**
+
+### 핵심 아이디어
+- KO / SUB / DEC 분포가 고를수록 위험
+- KO와 SUB가 동시에 열려 있으면 폭발적
+- 판정보다 피니시 비중이 높을수록 변동성 증가
+
+### 주요 요소
+- `finishRate` : KO + SUB 비중
+- `entropy` : 결말 방식 혼합도
+- `mismatch` : KO ↔ SUB 상성 충돌
+
+### 산출물
+- `FinishVolatilityScore`
+- `FinishVolatilityBreakdown`
+- `FinishVolatilityCalculator`
+
+> 엔트로피는 “정보 이론”이 아니라  
+> **“어떻게 끝날지 갈피를 못 잡겠는가”를 수치화한 도구**다.
+
+---
+
+##  Recency Shift
+
+###  목표
+> **이 선수는 지금 ‘변곡점’에 있는가?**
+
+### 핵심 아이디어
+- 방향(+/−)이 아니라 **변화의 크기**가 리스크
+- 급상승 / 급하락 모두 위험
+- 최근 기복 증가 역시 위험 신호
+
+### 주요 요소
+- `recentVsBaselineDelta` : 최근 평균 vs 장기 평균 차이
+- `trendSlope` : 최근 경기 흐름의 기울기
+- `volatilitySpike` : 최근 분산 급증 여부
+
+### 산출물
+- `RecencyShiftScore`
+- `RecencyShiftBreakdown`
+- `RecencyShiftDetector`
+
+> RecencyShift는  
+> **“이 선수를 지금 기준으로 평가해도 되는가?”**에 대한 질문이다.
+
+---
+
+## RiskScore Engine
+
+### 목표
+> **여러 리스크 신호를 하나의 판단으로 통합한다.**
+
+### 입력 요소
+- `baseAdvantageRisk` : Day11~15 상성 결과를 리스크 관점으로 변환
+- `uncertaintyRisk` : Day16 결과
+- `finishVolatilityRisk` : Day17 결과
+- `recencyShiftRisk` : Day18 결과
+
+### 핵심 아이디어
+- 각 리스크는 **서로 다른 원인**
+- 가중치는 정책(Policy)로 분리
+- breakdown을 통해 “왜 위험한지” 설명 가능
+
+### 산출물
+- `RiskScore`
+- `RiskBreakdown`
+- `RiskScoreEngine`
+- `RiskScorePolicy`
+
+---
+
+## Risk Result API
+
+### 목표
+> **RiskScore를 외부에 노출하는 API 계약 확정**
+
+### API
+```http
+GET /fights/{fightId}/risk
