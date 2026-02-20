@@ -3,9 +3,11 @@ package com.junyeol.ufc_risk_platform.platform.persistence.adapter;
 import com.junyeol.ufc_risk_platform.core.recency.RecentFightsPort;
 import com.junyeol.ufc_risk_platform.platform.persistence.entity.Fight;
 import com.junyeol.ufc_risk_platform.platform.persistence.repository.FightRepository;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class RecentFightsJpaAdapter implements RecentFightsPort {
     private final FightRepository fightRepository;
 

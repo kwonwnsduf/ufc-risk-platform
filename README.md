@@ -411,3 +411,25 @@ Phase 4에서는 경기 결과 예측이 아니라,
 ### API
 ```http
 GET /fights/{fightId}/risk
+
+```
+---
+# UFC Matchup Risk Platform
+## Rule-Based Probability Prediction & Context Assembly
+
+### 목표
+
+
+
+- 단순 승/패 예측 x
+- **확률 기반 예측 + 신뢰도 + 판단 근거(reason)** 제공 0
+- 기존  계산한 리스크 요소들을
+  **하나의 컨텍스트(Context)** 로 묶어
+  **룰 기반 확률 엔진**과 연결
+
+즉,  
+👉 *“이 경기 결과가 왜 불확실한지 / 왜 50%로 수렴하는지”* 를  
+**설명 가능한 방식으로 표현**하는 단계다.
+
+---
+

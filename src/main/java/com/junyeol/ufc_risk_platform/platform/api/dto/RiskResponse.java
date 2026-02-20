@@ -7,5 +7,7 @@ public record RiskResponse(  long matchupId,
                              RiskBreakdownResponse breakdown,
                              UncertaintyResponse uncertainty,
                              FinishVolatilityResponse finishVolatility,
-                             RecencyShiftResponse recencyShift) {
+                             RecencyShiftResponse recencyShift,
+                             ProbabilityResponse probability
+) {
 }

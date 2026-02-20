@@ -1,9 +1,11 @@
 package com.junyeol.ufc_risk_platform.core.recency;
 
 import com.junyeol.ufc_risk_platform.platform.persistence.entity.Fight;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class RecencyFightSelector {
     private final RecentFightsPort recentFightsPort;
 

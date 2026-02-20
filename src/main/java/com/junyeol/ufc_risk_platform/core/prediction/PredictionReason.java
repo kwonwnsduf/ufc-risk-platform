@@ -1,0 +1,10 @@
+package com.junyeol.ufc_risk_platform.core.prediction;
+
+public enum PredictionReason { STYLE_ADVANTAGE_RED,
+    STYLE_ADVANTAGE_BLUE,
+    HIGH_RISK_PULL_TO_50,
+    HIGH_UNCERTAINTY_PULL_TO_50,
+    HIGH_VOLATILITY_LIMIT_EXTREMES,
+    RECENCY_SHIFT_REDUCE_CONFIDENCE,
+    CLAMPED_TO_SAFE_RANGE
+}

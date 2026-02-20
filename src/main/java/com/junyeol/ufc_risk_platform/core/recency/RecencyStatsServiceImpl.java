@@ -3,9 +3,11 @@ package com.junyeol.ufc_risk_platform.core.recency;
 import com.junyeol.ufc_risk_platform.core.fight.model.FightResult;
 import com.junyeol.ufc_risk_platform.platform.persistence.entity.Fight;
 import com.junyeol.ufc_risk_platform.platform.persistence.entity.Fighter;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class RecencyStatsServiceImpl implements RecencyStatsService{
     private final RecencyFightSelector selector;
 
